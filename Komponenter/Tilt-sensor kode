@@ -6,20 +6,20 @@ Brukte denne koden: https://www.arduino.cc/en/Tutorial/Button
 
 _______________________________________________________________
 
-const int buttonPin = 2;     // nummeret på pushButton-pinnen
+const int tiltPin = 2;     // nummeret på pushButton-pinnen
 const int ledPin =  13;      // nummeret på LED-pinnen
 
-int buttonState = 0;         // tilstanden til sensoren
+int tiltState = 0;         // tilstanden til sensoren
 
 void setup() {
   pinMode(ledPin, OUTPUT);
-  pinMode(buttonPin, INPUT);
+  pinMode(tiltPin, INPUT);
 }
 
 void loop() {
-  buttonState = digitalRead(buttonPin);
+  tiltState = digitalRead(tiltPin);     // tilstanden er PÅ hvis sensoren er tiltet 45grader, av hvis ikke. 
   
-  if (buttonState == HIGH) {
+  if (tiltState == HIGH) {
     digitalWrite(ledPin, HIGH);         // skru LED på
   } else {
     digitalWrite(ledPin, LOW);          // skru LED av
