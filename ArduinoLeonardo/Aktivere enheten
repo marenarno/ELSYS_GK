@@ -1,0 +1,78 @@
+En forenkling av https://www.thethingsnetwork.org/docs/devices/uno/quick-start.html
+
+Setup av Arduino IDE:
+- Last ned nyeste Arduino IDE program
+- Installer TheThingsNetwork biblioteket og inkluder det i fila
+  Skisse > Inkluder Bibiotek > Administrer bibliotek > Søk på TheThingsNetwork og innstaller
+
+Koble til enheten:
+- Koble til enheten med USB
+- Verktøy > Kort > Arduino Leonardo
+- Verktøy > Port > Den som hører til Arduino Leonardo
+
+Lag en skisse: 
+- Skisse > Inkluder bibliotek > TheThingsNetwork
+- Lim inn denne koden: 
+
+
+#include <TheThingsNetwork.h> 
+#define loraSerial Serial1
+#define debugSerial Serial
+#define freqPlan TTN_FP_EU868 
+    
+TheThingsNetwork ttn(loraSerial, debugSerial, freqPlan);
+    
+void setup() {
+  loraSerial.begin(57600);
+  debugSerial.begin(9600);
+      
+  // Initialize LED output pin
+  pinMode(LED_BUILTIN, OUTPUT);
+    
+  // Wait a maximum of 10s for Serial Monitor
+  while (!debugSerial && millis() < 10000);
+    
+  debugSerial.println("-- STATUS");
+  ttn.showStatus();
+}
+
+
+- Kjør koden. Nå får du opp enhetens unike appKey og appEui
+
+
+Lag en konto og en applikasjon: 
+- Følg instruksjonene på lenken
+
+
+Registrer og aktiver enheten: 
+- Følg instruksjonene på lenken
+- Koden under er hele koden som skal stå i fila nå
+
+#include <TheThingsNetwork.h> 
+#define loraSerial Serial1
+#define debugSerial Serial
+#define freqPlan TTN_FP_EU868
+
+const char *appEui = "70B3D57ED0030361";                    //Unikt for denne enheten - bytt ut!
+const char *appKey = "5DB19E2D7F7AF99FFA3FF0CD68B35D3F";    //Unikt for denne enheten - bytt ut!
+    
+TheThingsNetwork ttn(loraSerial, debugSerial, freqPlan);
+    
+void setup() {
+  loraSerial.begin(57600);
+  debugSerial.begin(9600);
+      
+  // Initialize LED output pin
+  pinMode(LED_BUILTIN, OUTPUT);
+    
+  // Wait a maximum of 10s for Serial Monitor
+  while (!debugSerial && millis() < 10000);
+    
+  debugSerial.println("-- STATUS");
+  ttn.showStatus();
+  
+  debugSerial.println("-- JOIN");               
+  ttn.join(appEui, appKey); 
+}
+
+
