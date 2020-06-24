@@ -1,0 +1,88 @@
+Nå skal det sendes en melding, hvor verdiene til sensoren sendes kryptert over nett til applikasjonen. 
+Verdiene sendes i et uleselig språk. Det skal vi dekode og dekryptere senere.
+
+Funksjonen under er tatt med utgangspunkt i koden under "Message the application" herfra: https://www.thethingsnetwork.org/docs/devices/uno/quick-start.html,
+og kode til trykksensoren som er hentet herfra: https://learn.adafruit.com/force-sensitive-resistor-fsr/using-an-fsr 
+Oppkoblingen til trykksensoren er også hentet fra samme link.
+Bruker denne trykksensoren: https://www.elfadistrelec.no/no/fsr-kraftfolende-motstander-th-kg-arcol-fsr01ce/p/30140392?q=fsr&pos=3&origPos=3&origPageSize=10&track=true 
+
+
+
+
+
+
+
+#include <TheThingsNetwork.h>
+
+#define loraSerial Serial1                                  //Syntaks: #define constantName value. Er det samme som å bruke const: const int 13;
+#define debugSerial Serial
+
+#define freqPlan TTN_FP_EU868                               //Frekvensplan for stedet vi befinner oss på aka Norge
+
+const char *appEui = "70B3D57ED0030361";                    //Unikt for denne enheten - bytt ut!
+const char *appKey = "5DB19E2D7F7AF99FFA3FF0CD68B35D3F";    //Unikt for denne enheten - bytt ut!
+
+//Variabler til trykksensoren
+int fsrPin = 0;     // the FSR and 10K pulldown are connected to a0       
+int fsrReading;     // the analog reading from the FSR resistor divider
+int fsrVoltage;     // the analog reading converted to voltage
+long fsrForce;      // Finally, the resistance converted to force
+unsigned long fsrResistance;  // The voltage converted to resistance, can be very big so make "long"
+unsigned long fsrConductance; 
+ 
+TheThingsNetwork ttn(loraSerial, debugSerial, freqPlan);    //Lager en instans av TheThingsNetwork
+
+    
+void setup() {
+  loraSerial.begin(57600);                                  //Starter begge serialportene
+  debugSerial.begin(9600);
+  Serial.begin(9600);
+      
+  debugSerial.println("-- JOIN");               
+  ttn.join(appEui, appKey);                                 //Aktiverer og kobler til The Things Network
+}  
+
+void loop() {
+  debugSerial.println("-- LOOP");
+
+  fsrReading = analogRead(fsrPin);                      //Vet ikke hva dette gjør, men det sto på koden til trykksensoren som er koden jeg tar utgangspunkt i                
+  Serial.print("Analog reading = ");
+  Serial.println(fsrReading);
+ 
+  fsrVoltage = map(fsrReading, 0, 1023, 0, 5000);       //Finner ut om den har press på seg (spenningsdeling)
+  Serial.print("Voltage reading in mV = ");             
+  Serial.println(fsrVoltage);                           //Skriver ut verdien
+
+  
+  // Prepare array of 1 byte to indicate LED status
+  byte data[2];                                         //Her setter jeg av 2 bytes data, og får 4 alternativ?? OBS: bruk så lite plass som mulig
+
+  //Alternativ 1
+  if (fsrVoltage == 0) {                                //Ingen trykk
+    
+    data[0] = 0;
+    data[1] = 0;
+  }
+
+  //Alternativ 2
+  else if (fsrVoltage <= 600 && fsrVoltage > 0){       //Moderat trykk
+    data[0] = 1;
+    data[1] = 0;
+  }
+
+  //Alternativ 2
+  else {                                                //Høyt trykk
+    data[0] = 1;
+    data[1] = 1;
+  }
+
+
+  // Send it off
+  ttn.sendBytes(data, sizeof(data));
+      
+  delay(10000);
+      
+}
+
+
+Kan legge til et til alternativ om ønskelig!
