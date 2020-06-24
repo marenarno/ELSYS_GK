@@ -1,35 +1,30 @@
-#Tilt-Sensor
+Tilt-Sensor
 
 Har brukt denne: https://no.farnell.com/comus-assemtech/cm1421-0/tip-over-switch/dp/723745
 
 Brukte denne koden: https://www.arduino.cc/en/Tutorial/Button 
 
+_______________________________________________________________
 
-// constants won't change. They're used here to set pin numbers:
-const int buttonPin = 2;     // the number of the pushbutton pin
-const int ledPin =  13;      // the number of the LED pin
+const int buttonPin = 2;     // nummeret på pushButton-pinnen
+const int ledPin =  13;      // nummeret på LED-pinnen
 
-// variables will change:
-int buttonState = 0;         // variable for reading the pushbutton status
+int buttonState = 0;         // tilstanden til sensoren
 
 void setup() {
-  // initialize the LED pin as an output:
   pinMode(ledPin, OUTPUT);
-  // initialize the pushbutton pin as an input:
   pinMode(buttonPin, INPUT);
 }
 
 void loop() {
-  // read the state of the pushbutton value:
   buttonState = digitalRead(buttonPin);
-
-  // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
+  
   if (buttonState == HIGH) {
-    // turn LED on:
-    digitalWrite(ledPin, HIGH);
+    digitalWrite(ledPin, HIGH);         // skru LED på
   } else {
-    // turn LED off:
-    digitalWrite(ledPin, LOW);
+    digitalWrite(ledPin, LOW);          // skru LED av
   }
 }
+________________________________________________________________
+
 
