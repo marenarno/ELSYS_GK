@@ -1,0 +1,63 @@
+#include <TheThingsNetwork.h>
+
+#define loraSerial Serial1                                  //Syntaks: #define constantName value. Er det samme som å bruke const: const int 13;
+#define debugSerial Serial
+
+#define freqPlan TTN_FP_EU868                               //Frekvensplan for stedet vi befinner oss på aka Norge
+
+const char *appEui = ---------------------------------------Implementer appEui
+const char *appKey = ---------------------------------------Implementer appKey
+
+
+//----------------------------------------------------------Implementer definisjoner av variablene her
+
+
+    
+TheThingsNetwork ttn(loraSerial, debugSerial, freqPlan);    //Lager en instans av TheThingsNetwork
+    
+void setup() {
+  loraSerial.begin(57600);                                  //Starter begge serialportene
+  debugSerial.begin(9600);
+  
+  //--------------------------------------------------------Implementer setup() koden til sensoren her
+      
+  debugSerial.println("-- JOIN");                           //Aktiverer og kobler til The Things Network
+  ttn.join(appEui, appKey);                                 
+
+}
+    
+void loop() {
+  debugSerial.println("-- LOOP");
+
+  //--------------------------------------------------------Implementer definisjoner og tilleggsopplysninger fra loop()-koden til sensoren her
+
+  
+  // Prepare array of 1 byte to indicate LED status
+  byte data[2];
+
+  //Alternativ 1
+  if (SKRIV INN NOE HER) {----------------------------------Implementer her
+    
+    data[0] = 0;
+    data[1] = 0;
+  }
+
+  //Alternativ 2
+  else if (SKRIV INN NOE HER){------------------------------Implementer her
+    data[0] = 1;
+    data[1] = 0;
+  }
+
+  //Alternativ 3
+  else {                                                   
+    data[0] = 1;
+    data[1] = 1;
+  }
+
+
+  // Send it off
+  ttn.sendBytes(data, sizeof(data));
+      
+  delay(10000);
+      
+}
