@@ -79,6 +79,11 @@ void setup() {
 void loop(){
 }
 
-Feilmelding: Response is not OK: invalid_param
+Feilmeldinger:
+Sjekk at du har koblet til riktige porter, at EUI osv er rett
+Sjekk internetttilkobling
+Sjekk at du har den nyeste oppdateringa
+Vent litt og prøv igjen
+
 
 
