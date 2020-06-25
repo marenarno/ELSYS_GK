@@ -37,7 +37,8 @@ void setup() {
 }
 
 
-- Kjør koden. Nå får du opp enhetens unike appKey og appEui
+- Kjør koden, og trykk på seriell overvåker oppe i høyre hjørne
+  Nå får du opp enhetens unike appEui og appKey
 
 
 Lag en konto og en applikasjon: 
@@ -74,5 +75,10 @@ void setup() {
   debugSerial.println("-- JOIN");               
   ttn.join(appEui, appKey); 
 }
+
+void loop(){
+}
+
+Feilmelding: Response is not OK: invalid_param
 
 
